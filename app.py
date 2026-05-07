@@ -114,5 +114,7 @@ def api_parts():
     parts = Part.query.all()
     return {'parts': [{'id': p.id, 'name': p.name, 'price': p.price} for p in parts]}
 
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)  # debug=False بۆ بەرهەمهێنان باشترە
