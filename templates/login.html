@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>چوونەژوورەوە</h2>
+<form method="POST">
+    <div class="mb-3">
+        <label>ناوی بەکارهێنەر</label>
+        <input type="text" name="username" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>وشەی نهێنی</label>
+        <input type="password" name="password" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">چوونەژوورەوە</button>
+</form>
+{% endblock %}
