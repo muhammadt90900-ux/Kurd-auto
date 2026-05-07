@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="mb-4">پارچە نوێیەکان</h1>
+<form method="GET" class="row g-3 mb-4">
+    <div class="col-md-10">
+        <input type="text" name="q" class="form-control" placeholder="بگەڕێ بە ناو، مۆدێلی ئۆتۆمبێل یان وەسف..."
+               value="{{ search_query }}">
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">گەڕان</button>
+    </div>
+</form>
+<div class="row">
+    {% for part in parts %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            {% if part.image_url %}
+            <img src="{{ part.image_url }}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="وێنەی پارچە">
+            {% else %}
+            <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top" alt="No image">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ part.name }}</h5>
+                <p class="card-text text-muted">{{ part.car_model or 'ئۆتۆمبێلی گشتی' }}</p>
+                <p class="card-text fw-bold text-success">{{ "{:,.0f}".format(part.price) }} دینار</p>
+                <a href="{{ url_for('part_detail', part_id=part.id) }}" class="btn btn-outline-primary">وردەکاری</a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <p>هیچ پارچەیەک نەدۆزرایەوە.</p>
+    {% endfor %}
+</div>
+{% endblock %}
