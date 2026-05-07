@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        {% if part.image_url %}
+        <img src="{{ part.image_url }}" class="img-fluid rounded" alt="Part image">
+        {% else %}
+        <img src="https://via.placeholder.com/500x400?text=No+Image" class="img-fluid rounded">
+        {% endif %}
+    </div>
+    <div class="col-md-6">
+        <h2>{{ part.name }}</h2>
+        <p class="text-muted">بۆ ئۆتۆمبێلی: {{ part.car_model or 'دیاری نەکراو' }}</p>
+        <p class="fs-4 text-success">{{ "{:,.0f}".format(part.price) }} دینار</p>
+        <hr>
+        <p>{{ part.description }}</p>
+        <p><small>زیادکراوە لە: {{ part.created_at.strftime('%Y-%m-%d') }}</small></p>
+        <p><strong>فرۆشیار:</strong> {{ part.seller.username }}</p>
+        <!-- لێرەدا دواتر دوگمەی "کڕین" یان پەیوەندی دانێ -->
+    </div>
+</div>
+<a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">گەڕانەوە</a>
+{% endblock %}
