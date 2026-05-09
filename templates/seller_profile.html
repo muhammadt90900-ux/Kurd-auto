@@ -1,0 +1,28 @@
+<!-- templates/seller_profile.html -->
+{% extends "base.html" %}
+{% block content %}
+<h2>فرۆشیار: {{ seller.username }}</h2>
+{% if seller.phone %}
+<p>📞 {{ seller.phone }}</p>
+{% endif %}
+<hr>
+<h4>پارچەکانی ئەم فرۆشیارە</h4>
+<div class="row">
+    {% for part in parts %}
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            {% if part.image_url %}
+            <img src="{{ part.image_url }}" class="card-img-top" style="height: 150px; object-fit: cover;">
+            {% endif %}
+            <div class="card-body">
+                <h5>{{ part.name }}</h5>
+                <p>{{ "{:,.0f}".format(part.price) }} دینار</p>
+                <a href="{{ url_for('part_detail', part_id=part.id) }}" class="btn btn-sm btn-info">وردەکاری</a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <p>هیچ پارچەیەک نییە.</p>
+    {% endfor %}
+</div>
+{% endblock %}
