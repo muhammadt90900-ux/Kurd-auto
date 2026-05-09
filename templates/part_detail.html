@@ -1,23 +1,30 @@
+<!-- templates/part_detail.html -->
 {% extends "base.html" %}
 {% block content %}
 <div class="row">
     <div class="col-md-6">
         {% if part.image_url %}
-        <img src="{{ part.image_url }}" class="img-fluid rounded" alt="Part image">
+        <img src="{{ part.image_url }}" class="img-fluid rounded shadow" alt="{{ part.name }}">
         {% else %}
-        <img src="https://via.placeholder.com/500x400?text=No+Image" class="img-fluid rounded">
+        <img src="{{ url_for('static', filename='no-image.png') }}" class="img-fluid rounded" alt="No image">
         {% endif %}
     </div>
     <div class="col-md-6">
         <h2>{{ part.name }}</h2>
         <p class="text-muted">بۆ ئۆتۆمبێلی: {{ part.car_model or 'دیاری نەکراو' }}</p>
-        <p class="fs-4 text-success">{{ "{:,.0f}".format(part.price) }} دینار</p>
+        <p class="fs-4 text-success fw-bold">{{ "{:,.0f}".format(part.price) }} دینار</p>
         <hr>
-        <p>{{ part.description }}</p>
+        <p>{{ part.description or 'هیچ وەسفێک نییە.' }}</p>
         <p><small>زیادکراوە لە: {{ part.created_at.strftime('%Y-%m-%d') }}</small></p>
-        <p><strong>فرۆشیار:</strong> {{ part.seller.username }}</p>
-        <!-- لێرەدا دواتر دوگمەی "کڕین" یان پەیوەندی دانێ -->
+        <p>
+            <strong>فرۆشیار:</strong> 
+            <a href="{{ url_for('seller_profile', user_id=part.seller_id) }}">{{ part.seller.username }}</a>
+            {% if part.seller.phone %}
+                <br><small>📞 {{ part.seller.phone }}</small>
+            {% endif %}
+        </p>
+        <!-- دواتر دەتوانی دوگمەی کڕین یان پەیوەندی زیاد بکەیت -->
     </div>
 </div>
-<a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">گەڕانەوە</a>
+<a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">گەڕانەوە بۆ سەرەکی</a>
 {% endblock %}
