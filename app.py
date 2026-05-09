@@ -17,9 +17,9 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s [%(levelname)s] %(message)s'
 )
-logger = logging.getLogger(name)
+logger = logging.getLogger(__name__)
 
-app = Flask(name)
+app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'gellek-qursi-key-default')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///marketplace.db')
 app.config['WTF_CSRF_ENABLED'] = True
@@ -299,7 +299,7 @@ def server_error(e):
     return render_template('500.html'), 500
 
 
-if name == 'main':
+if __name__ == '__main__':
     create_tables()
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=False)
