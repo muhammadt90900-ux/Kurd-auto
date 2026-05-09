@@ -1,7 +1,9 @@
+<!-- templates/register.html -->
 {% extends "base.html" %}
 {% block content %}
 <h2>تۆماربوون</h2>
 <form method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="mb-3">
         <label>ناوی بەکارهێنەر</label>
         <input type="text" name="username" class="form-control" required>
@@ -9,6 +11,10 @@
     <div class="mb-3">
         <label>وشەی نهێنی</label>
         <input type="password" name="password" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>ژمارەی مۆبایل (ئارەزوومەندانە)</label>
+        <input type="tel" name="phone" class="form-control" placeholder="07xx xxx xxxx">
     </div>
     <div class="mb-3">
         <label>جۆری هەژمار</label>
@@ -19,4 +25,5 @@
     </div>
     <button type="submit" class="btn btn-success">تۆماربوون</button>
 </form>
+<p class="mt-3">پێشتر هەژمارت هەیە؟ <a href="{{ url_for('login') }}">بچۆ ژوورەوە</a></p>
 {% endblock %}
