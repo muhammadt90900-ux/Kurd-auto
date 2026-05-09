@@ -1,0 +1,40 @@
+<!-- templates/edit_part.html -->
+{% extends "base.html" %}
+{% block content %}
+<h2>دەستکاریکردنی پارچە: {{ part.name }}</h2>
+<form method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="mb-3">
+        <label>ناوی پارچە</label>
+        <input type="text" name="name" class="form-control" value="{{ part.name }}" required>
+    </div>
+    <div class="mb-3">
+        <label>مۆدێلی ئۆتۆمبێل</label>
+        <input type="text" name="car_model" class="form-control" value="{{ part.car_model or '' }}">
+    </div>
+    <div class="mb-3">
+        <label>وەسف</label>
+        <textarea name="description" class="form-control" rows="3">{{ part.description or '' }}</textarea>
+    </div>
+    <div class="mb-3">
+        <label>نرخ (دینار)</label>
+        <input type="number" step="0.01" name="price" class="form-control" value="{{ part.price }}" required>
+    </div>
+    <div class="mb-3">
+        <label>وێنەی نوێ (باربکە)</label>
+        <input type="file" name="image_file" class="form-control" accept="image/*">
+        <small>بەتاڵ بهێڵەوە ئەگەر ناتەوێت وێنەکە بگۆڕیت</small>
+        {% if part.image_url %}
+        <div class="mt-2">
+            <img src="{{ part.image_url }}" style="max-width: 200px; max-height: 150px;">
+        </div>
+        {% endif %}
+    </div>
+    <div class="mb-3">
+        <label>یان لینکی وێنە (ئەگەر بار نەکرا)</label>
+        <input type="url" name="image_url" class="form-control" placeholder="https://..." value="{{ part.image_url if part.image_url and not part.image_url.startswith('/static/uploads/') else '' }}">
+    </div>
+    <button type="submit" class="btn btn-primary">نوێکردنەوە</button>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">پاشگەزبوونەوە</a>
+</form>
+{% endblock %}
