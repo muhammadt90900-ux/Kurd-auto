@@ -1,3 +1,4 @@
+# models.py
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from datetime import datetime
@@ -9,6 +10,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
     user_type = db.Column(db.String(10), nullable=False)  # 'seller' or 'buyer'
+    phone = db.Column(db.String(20), default='')  # ژ. مۆبایل (ئارەزوومەندانە)
     parts = db.relationship('Part', backref='seller', lazy=True)
 
 class Part(db.Model):
@@ -17,6 +19,6 @@ class Part(db.Model):
     car_model = db.Column(db.String(80))
     description = db.Column(db.Text)
     price = db.Column(db.Float, nullable=False)
-    image_url = db.Column(db.String(300))  # لینکی وێنە (دەتوانی دواتر وێنەی ڕاستەقینە بار بکەیت)
+    image_url = db.Column(db.String(300))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     seller_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
