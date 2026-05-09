@@ -1,9 +1,43 @@
+/* static/style.css */
 body {
     background-color: #f8f9fa;
+    font-family: 'Noto Kufi Arabic', 'Tahoma', sans-serif;
 }
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
 .card {
-    transition: transform 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 .card:hover {
-    transform: scale(1.02);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.card-img-top {
+    object-fit: cover;
+    width: 100%;
+}
+
+footer {
+    margin-top: 50px;
+}
+
+.alert {
+    border-radius: 10px;
+}
+
+.btn {
+    border-radius: 20px;
+}
+
+.pagination .page-link {
+    color: #0d6efd;
+}
+.pagination .active .page-link {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
 }
