@@ -47,7 +47,8 @@ app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
 GMAIL_USER = os.environ.get('GMAIL_USER', '')
 GMAIL_PASS = os.environ.get('GMAIL_PASS', '')
 
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+import pathlib
+pathlib.Path(app.config['UPLOAD_FOLDER']).mkdir(parents=True, exist_ok=True)
 db.init_app(app)
 csrf = CSRFProtect(app)
 
