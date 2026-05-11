@@ -1,6 +1,6 @@
 from datetime import datetime
 from flask_login import UserMixin
-from .extensions import db
+from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
@@ -97,7 +97,7 @@ class User(UserMixin, db.Model):
     received_messages = db.relationship('Message', foreign_keys='Message.receiver_id', backref='receiver', lazy=True)
     # ئاگادارکردنەوە
     notifications = db.relationship('Notification', backref='user', lazy=True)
-    favorites = db.relationship('Favorite', backref='part', lazy=True)
+    favorites = db.relationship('Favorite', backref='fav_user', lazy=True)
 
 class Part(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -215,4 +215,4 @@ class Favorite(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     part_id = db.Column(db.Integer, db.ForeignKey('part.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    table_args = (db.UniqueConstraint('user_id', 'part_id', name='uq_user_part_fav'),)
+    __table_args__ = (db.UniqueConstraint('user_id', 'part_id', name='uq_user_part_fav'),)
