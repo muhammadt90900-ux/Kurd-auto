@@ -1,1 +1,1 @@
-# Kurd-auto
+# kurdauto
