@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4"><i class="fas fa-heart text-danger me-2"></i>پارچە دڵخوازەکانت</h2>
+    {% if favorites %}
+    <div class="row g-4">
+        {% for part in favorites %}
+        <div class="col-md-4">
+            <div class="ka-card">
+                <div style="position:relative;">
+                    {% if part.image_url %}
+                        {% if part.media_type == 'video' %}
+                        <video class="ka-card-video" src="{{ part.image_url }}" muted loop playsinline></video>
+                        {% else %}
+                        <img class="ka-card-img" src="{{ part.image_url }}" alt="{{ part.name }}">
+                        {% endif %}
+                    {% endif %}
+                    {% if part.city %}<span class="city-badge">{{ part.city }}</span>{% endif %}
+                </div>
+                <div class="ka-card-body">
+                    <h5 class="ka-card-title">{{ part.name }}</h5>
+                    <p class="ka-card-price">{{ "{:,.0f}".format(part.price) }} دینار</p>
+                    <a href="{{ url_for('part_detail', part_id=part.id) }}" class="btn-ka-primary w-100">
+                        <i class="fas fa-eye me-1"></i>وردەکاری
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5 text-muted">
+        <i class="far fa-heart fa-3x mb-3"></i>
+        <p>هێشتا هیچ پارچەیەکت نەخستووەتە ناو دڵخوازەکان.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
