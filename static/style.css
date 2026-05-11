@@ -845,3 +845,59 @@ body {
     padding: 3px 10px;
     margin-bottom: 10px;
 }
+
+/* ===== دڵخواز ===== */
+.fav-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s;
+    color: #666;
+}
+.fav-btn.active, .fav-btn:hover {
+    color: #e53e3e;
+}
+.fav-btn i.fas { color: #e53e3e; }
+
+/* ===== بەراورد checkbox ===== */
+.compare-check {
+    margin-right: 5px;
+}
+
+/* ===== Scroll to Top Button ===== */
+#scrollTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 99;
+    background: var(--gold);
+    color: #000;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    transition: opacity 0.3s, transform 0.3s;
+}
+#scrollTopBtn:hover {
+    background: var(--gold-light);
+    transform: scale(1.1);
+}
+
+/* ===== حسابکەری قیست ===== */
+.loan-calc {
+    background: var(--dark-card2);
+    border: 1px solid var(--dark-border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-top: 20px;
+}
+.loan-calc h5 { color: var(--gold); }
+.loan-result { font-size: 1.2rem; font-weight: bold; color: var(--gold); margin-top: 10px; }
+
+/* بەدجی ئەدەد */
+.bg-gold { background-color: var(--gold); color: #000; font-size: 0.7rem; }
