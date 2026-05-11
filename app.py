@@ -14,7 +14,8 @@ import requests
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 import magic as magic_module
-from models import db, User, Part, Reel, ReelLike, SiteSettings, IRAQ_CITIES, CAR_BRANDS, CAR_BRAND_LOGOS, Message, Review, Notification
+from module import db, User, Part, Reel, ReelLike, SiteSettings, IRAQ_CITIES, CAR_BRANDS, CAR_BRAND_LOGOS, Message, Review, Notification
+
 # ============================================================
 # یەک جار load_dotenv و دروستکردنی ئەپ
 # ============================================================
