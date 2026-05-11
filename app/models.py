@@ -98,7 +98,7 @@ class User(UserMixin, db.Model):
     received_messages = db.relationship('Message', foreign_keys='Message.receiver_id', backref='receiver', lazy=True)
     # ئاگادارکردنەوە
     notifications = db.relationship('Notification', backref='user', lazy=True)
-
+    favorites = db.relationship('Favorite', backref='part', lazy=True)
 
 class Part(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -117,6 +117,8 @@ class Part(db.Model):
     # نرخدان
     reviews = db.relationship('Review', backref='part', lazy=True)
 
+    favorites = db.relationship('Favorite', backref='part', lazy=True)
+    
     @property
     def avg_rating(self):
         if not self.reviews:
@@ -205,3 +207,13 @@ class Notification(db.Model):
     link = db.Column(db.String(300), nullable=True)
     is_read = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+# ═══════════════════════════════════════════════
+# ❤️ دڵخوازەکان
+# ═══════════════════════════════════════════════
+class Favorite(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    part_id = db.Column(db.Integer, db.ForeignKey('part.id'), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    table_args = (db.UniqueConstraint('user_id', 'part_id', name='uq_user_part_fav'),)
