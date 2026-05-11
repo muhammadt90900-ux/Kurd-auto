@@ -74,6 +74,44 @@
             </div>
 
             <!-- Contact Buttons -->
+            <!-- دڵخواز و بەراورد -->
+<div class="d-flex gap-3 align-items-center my-3">
+    {% if current_user.is_authenticated %}
+    <button class="fav-btn" data-part-id="{{ part.id }}">
+        <i class="{% if is_part_favorite(part) %}fas{% else %}far{% endif %} fa-heart fa-lg"></i> دڵخواز
+    </button>
+    {% endif %}
+    <label class="d-flex align-items-center" style="cursor:pointer;">
+        <input type="checkbox" class="compare-check me-2" value="{{ part.id }}"> زیادکردن بۆ بەراورد
+    </label>
+</div>
+
+<!-- حسابکەری قیست -->
+<div class="loan-calc">
+    <h5>🧮 حسابکەری قیستی مانگانە</h5>
+    <form id="loanForm" class="row g-2">
+        <div class="col-md-6">
+            <label class="form-label">نرخی ئۆتۆمبێل ($)</label>
+            <input type="number" id="carPrice" class="form-control ka-input" value="{{ part.price }}" readonly>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">پارەی پێشەکی ($)</label>
+            <input type="number" id="downPayment" class="form-control ka-input" value="0" min="0">
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">ڕێژەی سوود (ساڵانە %)</label>
+            <input type="number" id="interestRate" class="form-control ka-input" value="5" min="0" step="0.1">
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">ماوە (مانگ)</label>
+            <input type="number" id="loanMonths" class="form-control ka-input" value="24" min="1">
+        </div>
+        <div class="col-12">
+            <button type="button" id="calcBtn" class="btn-ka-primary mt-2">حسابکردن</button>
+            <div id="monthlyPayment" class="loan-result mt-2"></div>
+        </div>
+    </form>
+</div>
             <div class="d-flex gap-2 mt-3 flex-wrap">
                 {% set wp = part.seller.whatsapp or part.seller.phone %}
                 {% if wp %}
