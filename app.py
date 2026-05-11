@@ -1570,6 +1570,106 @@ def server_error(e):
     logger.error(f"Server error: {e}", exc_info=True)
     return render_template('500.html'), 500
 
+# ═══════════════════════════════════════════════
+# ❤️ FAVORITES — دڵخوازەکان
+# ═══════════════════════════════════════════════
+
+@app.route('/favorite/toggle/<int:part_id>', methods=['POST'])
+@login_required
+def toggle_favorite(part_id):
+    part = Part.query.get_or_404(part_id)
+    fav = Favorite.query.filter_by(user_id=current_user.id, part_id=part_id).first()
+    if fav:
+        db.session.delete(fav)
+        db.session.commit()
+        return jsonify({'status': 'removed', 'count': Favorite.query.filter_by(user_id=current_user.id).count()})
+    else:
+        db.session.add(Favorite(user_id=current_user.id, part_id=part_id))
+        db.session.commit()
+        return jsonify({'status': 'added', 'count': Favorite.query.filter_by(user_id=current_user.id).count()})
+
+
+@app.route('/favorites')
+@login_required
+def favorites():
+    fav_parts = Part.query.join(Favorite).filter(Favorite.user_id == current_user.id).all()
+    return render_template('favorites.html', favorites=fav_parts)
+
+
+# ═══════════════════════════════════════════════
+# ⚖️ COMPARE — بەراوردکردن
+# ═══════════════════════════════════════════════
+
+@app.route('/compare')
+def compare():
+    part_ids = session.get('compare_list', [])
+    parts = Part.query.filter(Part.id.in_(part_ids)).all() if part_ids else []
+    return render_template('compare.html', compare_parts=parts)
+
+
+@app.route('/compare/add/<int:part_id>', methods=['POST'])
+def add_to_compare(part_id):
+    part = Part.query.get_or_404(part_id)
+    compare_list = session.get('compare_list', [])
+    if part_id not in compare_list:
+        if len(compare_list) < 3:
+            compare_list.append(part_id)
+            session['compare_list'] = compare_list
+            return jsonify({'status': 'added', 'count': len(compare_list)})
+        else:
+            return jsonify({'status': 'limit', 'count': len(compare_list)}), 400
+    return jsonify({'status': 'already', 'count': len(compare_list)})
+
+
+@app.route('/compare/remove/<int:part_id>', methods=['POST'])
+def remove_from_compare(part_id):
+    compare_list = session.get('compare_list', [])
+    if part_id in compare_list:
+        compare_list.remove(part_id)
+        session['compare_list'] = compare_list
+    return jsonify({'status': 'removed', 'count': len(compare_list)})
+
+
+# ═══════════════════════════════════════════════
+# 📊 API & UTILS — ئەی پی ئای
+# ═══════════════════════════════════════════════
+
+@app.route('/api/counters')
+def api_counters():
+    fav_count = 0
+    comp_count = 0
+    if current_user.is_authenticated:
+        fav_count = Favorite.query.filter_by(user_id=current_user.id).count()
+    comp_count = len(session.get('compare_list', []))
+    return jsonify({'favorites': fav_count, 'compare': comp_count})
+
+
+@app.context_processor
+def inject_is_favorite():
+    def is_part_favorite(part):
+        if not current_user.is_authenticated:
+            return False
+        return Favorite.query.filter_by(user_id=current_user.id, part_id=part.id).first() is not None
+    return dict(is_part_favorite=is_part_favorite)
+
+
+# SEO Sitemap
+@app.route('/sitemap.xml')
+def sitemap():
+    base_url = request.url_root.rstrip('/')
+    pages = []
+    for rule in ['index', 'reels', 'plans', 'login', 'register', 'terms', 'privacy']:
+        pages.append({'loc': url_for(rule, _external=True), 'changefreq': 'weekly'})
+    parts = Part.query.all()
+    for p in parts:
+        pages.append({'loc': url_for('part_detail', part_id=p.id, _external=True), 'changefreq': 'daily'})
+    xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    for page in pages:
+        xml += f"  <url>\n    <loc>{page['loc']}</loc>\n    <changefreq>{page['changefreq']}</changefreq>\n  </url>\n"
+    xml += '</urlset>'
+    response = app.response_class(xml, mimetype='application/xml')
+    return response
+
 
 if __name__ == '__main__':
     create_tables()
